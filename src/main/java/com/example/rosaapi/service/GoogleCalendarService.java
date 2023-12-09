@@ -74,7 +74,7 @@ public class GoogleCalendarService {
 
         ZoneId utcMinus3 = ZoneId.of("UTC-3");
 
-        ZonedDateTime currentDateTime = ZonedDateTime.now(utcMinus3).plusDays(20);
+        ZonedDateTime currentDateTime = ZonedDateTime.now(utcMinus3);
 
 
         LocalDate startOfWeek;
