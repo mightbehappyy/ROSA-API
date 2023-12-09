@@ -33,3 +33,8 @@ build/
 .vscode/
 
 .mvn
+
+/src/main/resources/credentials.json
+tokens/
+
+
