@@ -2,6 +2,7 @@ package com.example.rosaapi.service;
 
 import com.example.rosaapi.model.dtos.CalendarEventDTO;
 import com.example.rosaapi.model.dtos.CalendarWeekEventsDTO;
+import com.example.rosaapi.utils.DateTimeUtils;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -73,28 +74,28 @@ public class GoogleCalendarService {
         // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
 
-        System.out.println(now);
+
         Events events = service.events().list("primary")
                 .setMaxResults(10)
                 .setTimeMin(now)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();
+
         return getCalendarWeekEventsDTO(events);
     }
 
     private static CalendarWeekEventsDTO getCalendarWeekEventsDTO(Events events) {
         List<Event> items = events.getItems();
-
-
         CalendarWeekEventsDTO calendarWeekEvents = new CalendarWeekEventsDTO();
         List<CalendarEventDTO> calendarEventDTOS = new ArrayList<>();
+
         for (Event event : items) {
             long start = event.getStart().getDateTime().getValue();
             long end = event.getEnd().getDateTime().getValue();
             String summary = event.getSummary();
 
-            CalendarEventDTO calendarEventDTO = getCalendarEventDTO(start, end, summary);
+            CalendarEventDTO calendarEventDTO = DateTimeUtils.convertUnixToDTO(start, end, summary);
 
             calendarEventDTOS.add(calendarEventDTO);
 
@@ -104,25 +105,5 @@ public class GoogleCalendarService {
         return calendarWeekEvents;
     }
 
-    private static CalendarEventDTO getCalendarEventDTO(long start, long end, String summary) {
-        Date convertedStart = new Date(start);
-        Date convertedEnd = new Date(end);
 
-        SimpleDateFormat timeConverter = new SimpleDateFormat("HH:mm");
-        SimpleDateFormat dateConverter = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat dayOfWeekConverter = new SimpleDateFormat("EEE");
-
-
-        String formattedDay = dayOfWeekConverter.format(convertedStart);
-        String formattedDate = dateConverter.format(convertedStart);
-        String formattedStart = timeConverter.format(convertedStart);
-        String formattedEnd = timeConverter.format(convertedEnd);
-
-        return new CalendarEventDTO(
-                summary,
-                formattedStart,
-                formattedEnd,
-                formattedDate,
-                formattedDay);
-    }
 }

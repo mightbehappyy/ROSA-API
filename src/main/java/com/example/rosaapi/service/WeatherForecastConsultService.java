@@ -31,7 +31,6 @@ public class WeatherForecastConsultService {
                             .getForecastday().get(0);
 
             List<ForecastStatsDTO> data = new ArrayList<>(forecastdayDTO.getHour());
-
             ChartService chartService = new ChartService(new QuickChart());
             String graphURL = chartService.getWeatherGraphic(data);
 
