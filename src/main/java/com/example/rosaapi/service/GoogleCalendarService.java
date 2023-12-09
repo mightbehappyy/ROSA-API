@@ -24,10 +24,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
-import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /* class to demonstrate use of Calendar events list API */
@@ -65,19 +65,38 @@ public class GoogleCalendarService {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public CalendarWeekEventsDTO getTenEvents() throws IOException, GeneralSecurityException {
+    public CalendarWeekEventsDTO getWeekEvents() throws IOException, GeneralSecurityException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
 
-        // List the next 10 events from the primary calendar.
-        DateTime now = new DateTime(System.currentTimeMillis());
+
+        ZoneId utcMinus3 = ZoneId.of("UTC-3");
+
+        ZonedDateTime currentDateTime = ZonedDateTime.now(utcMinus3).plusDays(20);
+
+
+        LocalDate startOfWeek;
+        if (currentDateTime.getDayOfWeek() == DayOfWeek.SATURDAY || currentDateTime.getDayOfWeek() == DayOfWeek.SUNDAY)
+        {
+            startOfWeek = currentDateTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).toLocalDate();
+        } else {
+            startOfWeek = currentDateTime.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).toLocalDate();
+        }
+
+        LocalDate endOfWeek = startOfWeek.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
+
+
+        DateTime startTime = new DateTime(startOfWeek.atStartOfDay().toInstant(ZoneOffset.ofHours(-3)).toEpochMilli());
+        DateTime endTime = new DateTime(endOfWeek.plusDays(1).atStartOfDay().toInstant(ZoneOffset.ofHours(-3))
+                .toEpochMilli());
+
 
 
         Events events = service.events().list("primary")
-                .setMaxResults(10)
-                .setTimeMin(now)
+                .setTimeMin(startTime)
+                .setTimeMax(endTime)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();

@@ -21,7 +21,7 @@ public class GoogleCalendarController {
     @GetMapping("/eventos")
     public ResponseEntity<GoogleCalendarResponse> getLastTenEvents() throws GeneralSecurityException, IOException {
         GoogleCalendarService googleCalendarService = new GoogleCalendarService();
-        return ResponseEntity.ok(new GoogleCalendarResponse(googleCalendarService.getTenEvents()));
+        return ResponseEntity.ok(new GoogleCalendarResponse(googleCalendarService.getWeekEvents()));
 
     }
 }
