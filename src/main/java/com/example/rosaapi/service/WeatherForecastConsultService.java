@@ -24,7 +24,7 @@ public class WeatherForecastConsultService {
                     ,weatherApiToken, city);
             RestTemplate restTemplate = new RestTemplate();
 
-            ForecastdayDTO forecastdayDTO = Objects.requireNonNull(restTemplate
+             ForecastdayDTO forecastdayDTO = Objects.requireNonNull(restTemplate
                             .getForEntity(url, ForecastDataDTO.class)
                             .getBody())
                             .getForecast()

@@ -3,7 +3,7 @@ package com.example.rosaapi.controllers.responses;
 
 import com.example.rosaapi.model.dtos.CalendarEventDTO;
 import com.example.rosaapi.model.dtos.CalendarWeekEventsDTO;
-import com.google.api.services.calendar.model.Event;
+
 import lombok.Getter;
 
 import java.util.List;

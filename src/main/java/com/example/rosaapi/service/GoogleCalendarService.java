@@ -3,36 +3,25 @@ package com.example.rosaapi.service;
 import com.example.rosaapi.model.dtos.CalendarEventDTO;
 import com.example.rosaapi.model.dtos.CalendarWeekEventsDTO;
 import com.example.rosaapi.utils.DateTimeUtils;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
+import lombok.RequiredArgsConstructor;
 
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.rosaapi.service.GoogleAuthService.*;
-
+@RequiredArgsConstructor
 public class GoogleCalendarService {
 
+    private final Calendar service;
 
-    private static Calendar getCalendarService() throws GeneralSecurityException, IOException {
-        final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-
-        return new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-    }
-
-    public CalendarWeekEventsDTO getWeekEvents() throws IOException, GeneralSecurityException {
-        Calendar service = getCalendarService();
+    public CalendarWeekEventsDTO getWeekEvents() throws IOException {
 
         LocalDate startOfWeek = getStartOfWeek();
         LocalDate endOfWeek = startOfWeek.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));

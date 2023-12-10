@@ -2,6 +2,7 @@ package com.example.rosaapi.controllers;
 
 
 import com.example.rosaapi.controllers.responses.GoogleCalendarResponse;
+import com.example.rosaapi.service.GoogleAuthService;
 import com.example.rosaapi.service.GoogleCalendarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class GoogleCalendarController {
 
     @GetMapping("/eventos")
     public ResponseEntity<GoogleCalendarResponse> getLastTenEvents() throws GeneralSecurityException, IOException {
-        GoogleCalendarService googleCalendarService = new GoogleCalendarService();
+        GoogleCalendarService googleCalendarService = new GoogleCalendarService(GoogleAuthService.getCalendarService());
         return ResponseEntity.ok(new GoogleCalendarResponse(googleCalendarService.getWeekEvents()));
 
     }
