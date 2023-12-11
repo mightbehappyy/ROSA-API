@@ -20,6 +20,6 @@ public class WeatherConsultController {
 
     @GetMapping("{city}")
     public ResponseEntity<WeatherConsultResponse> getCurrentWeather(@PathVariable("city") String city) {
-        return ResponseEntity.ok(new WeatherConsultResponse(weatherConsultService.getWeatherData(city)));
+        return ResponseEntity.ok(new WeatherConsultResponse(weatherConsultService.getCurrentWeatherData(city)));
     }
 }
