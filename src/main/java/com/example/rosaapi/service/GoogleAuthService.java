@@ -1,5 +1,7 @@
 package com.example.rosaapi.service;
 
+import com.example.rosaapi.utils.exceptions.CalendarCredentialsException;
+import com.example.rosaapi.utils.exceptions.CalendarServiceException;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -34,32 +36,41 @@ public class GoogleAuthService {
     private GoogleAuthService() {
 
     }
-    private static Credential getCredentials(final NetHttpTransport httpTransport)
-            throws IOException {
-        // Load client secrets.
-        InputStream in = GoogleCalendarService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-        if (in == null) {
-            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
-        }
-        GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+    private static Credential getCredentials(final NetHttpTransport httpTransport) {
+        try {
+            // Load client secrets.
+            InputStream in = GoogleCalendarService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+            if (in == null) {
+                throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
+            }
+            GoogleClientSecrets clientSecrets =
+                    GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
-        // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                httpTransport, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
-                .setAccessType("offline")
-                .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        //returns an authorized Credential object.
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+            // Build flow and trigger user authorization request.
+            GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+                    httpTransport, JSON_FACTORY, clientSecrets, SCOPES)
+                    .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                    .setAccessType("offline")
+                    .build();
+            LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+            //returns an authorized Credential object.
+            return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        } catch(IOException e) {
+            throw  new CalendarCredentialsException("An error occurred:" + e);
+        }
+
     }
 
-    public static Calendar getCalendarService() throws GeneralSecurityException, IOException {
-        final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+    public static Calendar getCalendarService() {
+        try{
+            final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 
-        return new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
+            return new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+        } catch(IOException | GeneralSecurityException e) {
+            throw new CalendarServiceException("An error occurred:"+e);
+        }
+
     }
 }
