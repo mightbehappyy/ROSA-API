@@ -76,14 +76,14 @@ public class GoogleCalendarService {
         try {
             Event event = new Event().setSummary(calendarEventDTO.getSummary());
 
-            DateTime startDateTime = new DateTime(calendarEventDTO.getStart());
+            DateTime startDateTime = new DateTime(calendarEventDTO.getStart()+"-03:00");
             EventDateTime start = new EventDateTime()
                     .setDateTime(startDateTime)
                     .setTimeZone("America/Recife");
 
             event.setStart(start);
 
-            DateTime endDateTime = new DateTime(calendarEventDTO.getEnd());
+            DateTime endDateTime = new DateTime(calendarEventDTO.getEnd()+"-03:00");
             EventDateTime end = new EventDateTime()
                     .setDateTime(endDateTime)
                     .setTimeZone("America/Recife");
@@ -91,12 +91,13 @@ public class GoogleCalendarService {
             event.setEnd(end);
 
             service.events().insert("primary", event).execute();
-            return new CalendarEventDTO(
-                    calendarEventDTO.getSummary(),
-                    calendarEventDTO.getStart(),
-                    calendarEventDTO.getEnd(),
-                    calendarEventDTO.getStart(),
-                    calendarEventDTO.getStart());
+
+
+            return DateTimeUtils.convertUnixToDTO(
+                    event.getStart().getDateTime().getValue(),
+                    event.getEnd().getDateTime().getValue(),
+                    event.getSummary()
+            );
         } catch (NumberFormatException e) {
             throw new DateTimeInvalidException(e.getMessage());
         } catch (IOException e) {
