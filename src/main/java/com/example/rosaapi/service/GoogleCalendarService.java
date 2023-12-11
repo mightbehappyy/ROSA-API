@@ -3,6 +3,7 @@ package com.example.rosaapi.service;
 import com.example.rosaapi.model.dtos.CalendarEventDTO;
 import com.example.rosaapi.model.dtos.CalendarWeekEventsDTO;
 import com.example.rosaapi.utils.DateTimeUtils;
+import com.example.rosaapi.utils.exceptions.DateTimeInvalidException;
 import com.example.rosaapi.utils.exceptions.EventInvalidException;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
@@ -67,12 +68,11 @@ public class GoogleCalendarService {
                     .setSingleEvents(true)
                     .execute();
         } catch(IOException e) {
-            throw new EventInvalidException("An error occurred: " + e);
+            throw new EventInvalidException("An error occurred when fetching events: " + e.getMessage());
         }
-
     }
 
-    public Event postEvents(CalendarEventDTO calendarEventDTO) {
+    public CalendarEventDTO postEvents(CalendarEventDTO calendarEventDTO) {
         try {
             Event event = new Event().setSummary(calendarEventDTO.getSummary());
 
@@ -90,11 +90,12 @@ public class GoogleCalendarService {
 
             event.setEnd(end);
 
-            return service.events().insert("primary", event).execute();
+            service.events().insert("primary", event).execute();
+            return new CalendarEventDTO(calendarEventDTO.getSummary(), calendarEventDTO.getStart(), calendarEventDTO.getEnd());
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid date/time format: " + e.getMessage());
+            throw new DateTimeInvalidException("Invalid date/time format: " + e.getMessage());
         } catch (IOException e) {
-            throw new EventInvalidException("Unable to post Event: " + e.getMessage());
+            throw new EventInvalidException("An error occurred when posting an event: " + e.getMessage());
         }
     }
 }

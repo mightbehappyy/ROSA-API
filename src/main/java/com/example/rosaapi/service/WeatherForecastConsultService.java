@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,11 +39,8 @@ public class WeatherForecastConsultService {
             Objects.requireNonNull(forecastData).setUrl(graphURL);
 
             return forecastData;
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Data value empty"+ e);
-        } catch (HttpClientErrorException.BadRequest e) {
-            throw new CityInvalidException("Unable to understand request" + e);
+        }  catch (HttpClientErrorException.BadRequest e) {
+            throw new CityInvalidException("Unable to understand city's name");
         }
     }
-
 }

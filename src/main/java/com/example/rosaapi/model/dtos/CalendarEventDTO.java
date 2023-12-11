@@ -8,11 +8,26 @@ import java.util.Date;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+
 public class CalendarEventDTO {
     private final String summary;
     private final String start;
     private final String end;
-    private final String date;
-    private final String dayOfWeek;
+    private String date;
+    private String dayOfWeek;
+
+    public CalendarEventDTO(String summary, String start, String end, String date, String dayOfWeek) {
+        this.summary = summary;
+        this.start = start;
+        this.end = end;
+        this.date = date;
+        this.dayOfWeek = dayOfWeek;
+    }
+    public CalendarEventDTO(String summary, String start, String end) {
+        this.summary = summary;
+        this.start = start;
+        this.end = end;
+    }
+
+
 }

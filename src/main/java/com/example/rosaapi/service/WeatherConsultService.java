@@ -19,10 +19,9 @@ public class WeatherConsultService {
             RestTemplate restTemplate = new RestTemplate();
 
             return restTemplate.getForEntity(url, WeatherDataDTO.class).getBody();
-        } catch (HttpClientErrorException.NotFound e) {
-            throw new CityInvalidException("City not found " + e);
-        } catch(HttpClientErrorException.BadRequest e ) {
-            throw new CityInvalidException("Unable to understand request " + e);
+        }
+        catch(HttpClientErrorException.BadRequest e ) {
+            throw new CityInvalidException("Unable to understand city's name");
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.rosaapi.controllers;
 
 
+import com.example.rosaapi.controllers.responses.CalendarEventResponse;
 import com.example.rosaapi.controllers.responses.GoogleCalendarResponse;
 import com.example.rosaapi.model.dtos.CalendarEventDTO;
 import com.example.rosaapi.service.GoogleAuthService;
@@ -28,7 +29,7 @@ public class GoogleCalendarController {
     public ResponseEntity<?> postEvent(@RequestBody CalendarEventDTO calendarEventDTO)  {
         try {
             googleCalendarService.postEvents(calendarEventDTO);
-            return ResponseEntity.ok().body("Event created successfully");
+            return ResponseEntity.ok(new CalendarEventResponse(googleCalendarService.postEvents(calendarEventDTO)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Bad request: " + e.getMessage());
         } catch (EventInvalidException e) {
