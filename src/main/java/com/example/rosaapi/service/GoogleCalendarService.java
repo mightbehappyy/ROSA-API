@@ -91,9 +91,14 @@ public class GoogleCalendarService {
             event.setEnd(end);
 
             service.events().insert("primary", event).execute();
-            return new CalendarEventDTO(calendarEventDTO.getSummary(), calendarEventDTO.getStart(), calendarEventDTO.getEnd());
+            return new CalendarEventDTO(
+                    calendarEventDTO.getSummary(),
+                    calendarEventDTO.getStart(),
+                    calendarEventDTO.getEnd(),
+                    calendarEventDTO.getStart(),
+                    calendarEventDTO.getStart());
         } catch (NumberFormatException e) {
-            throw new DateTimeInvalidException("Invalid date/time format: " + e.getMessage());
+            throw new DateTimeInvalidException(e.getMessage());
         } catch (IOException e) {
             throw new EventInvalidException("An error occurred when posting an event: " + e.getMessage());
         }

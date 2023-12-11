@@ -20,20 +20,14 @@ public class GoogleCalendarController {
 
     private final GoogleCalendarService googleCalendarService =
             new GoogleCalendarService(GoogleAuthService.getCalendarService());
-    @GetMapping("/eventos")
+    @GetMapping("/eventos-da-semana")
     public ResponseEntity<GoogleCalendarResponse> getWeekEvents(){
         return ResponseEntity.ok(new GoogleCalendarResponse(googleCalendarService.getWeekEvents()));
     }
 
     @PostMapping("/criar-evento")
-    public ResponseEntity<?> postEvent(@RequestBody CalendarEventDTO calendarEventDTO)  {
-        try {
-            googleCalendarService.postEvents(calendarEventDTO);
+    public ResponseEntity<CalendarEventResponse> postEvent(@RequestBody CalendarEventDTO calendarEventDTO)  {
             return ResponseEntity.ok(new CalendarEventResponse(googleCalendarService.postEvents(calendarEventDTO)));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Bad request: " + e.getMessage());
-        } catch (EventInvalidException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
         }
     }
-}
+
