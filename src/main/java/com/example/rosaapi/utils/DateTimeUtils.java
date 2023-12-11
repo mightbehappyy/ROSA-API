@@ -1,14 +1,14 @@
 package com.example.rosaapi.utils;
 
 import com.example.rosaapi.model.dtos.CalendarEventDTO;
+import com.google.api.services.calendar.model.Event;
 
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.List;
 
 public final class DateTimeUtils {
 
@@ -45,5 +45,26 @@ public final class DateTimeUtils {
                 } else {
                         return currentDateTime.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).toLocalDate();
                 }
+        }
+
+        public static String getWeekRange(List<Event> items) {
+                long firstStart = items.get(0).getStart().getDateTime().getValue();
+                long lastEnd = items.get(items.size() - 1).getEnd().getDateTime().getValue();
+
+                LocalDate firstStartDate = Instant.ofEpochMilli(firstStart)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime().toLocalDate();
+
+                LocalDate lastEndDate = Instant.ofEpochMilli(lastEnd)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime()
+                        .toLocalDate();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+                String formattedFirstStartDate = firstStartDate.format(dateFormatter);
+                String formattedLastEndDate = lastEndDate.format(dateFormatter);
+
+            return formattedFirstStartDate + " " + formattedLastEndDate;
+
         }
 }

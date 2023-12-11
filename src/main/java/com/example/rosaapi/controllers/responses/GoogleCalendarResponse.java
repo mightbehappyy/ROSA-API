@@ -11,9 +11,11 @@ import java.util.List;
 @Getter
 public class GoogleCalendarResponse {
 
+    private final String weekRange;
     private final List<CalendarEventDTO> weekEvents;
 
     public GoogleCalendarResponse(CalendarWeekEventsDTO calendarWeekEvents) {
         this.weekEvents = calendarWeekEvents.getWeekEvents();
+        this.weekRange = calendarWeekEvents.getWeekRange();
     }
 }

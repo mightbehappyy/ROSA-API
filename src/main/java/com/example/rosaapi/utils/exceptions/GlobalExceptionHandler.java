@@ -26,8 +26,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex) {
-        String customErrorMessage = "The requested city name resource was not found";
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),customErrorMessage);
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 

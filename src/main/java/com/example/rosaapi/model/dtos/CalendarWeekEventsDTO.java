@@ -9,5 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class CalendarWeekEventsDTO {
+    private String weekRange;
     private List<CalendarEventDTO> weekEvents;
+
 }
