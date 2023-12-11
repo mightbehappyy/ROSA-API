@@ -15,6 +15,4 @@ public class CalendarEventDTO {
     private final String end;
     private final String date;
     private final String dayOfWeek;
-
-
 }
