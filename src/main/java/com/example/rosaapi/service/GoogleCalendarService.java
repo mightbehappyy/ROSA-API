@@ -46,17 +46,15 @@ public class GoogleCalendarService {
         CalendarWeekEventsDTO calendarWeekEvents = new CalendarWeekEventsDTO();
         List<CalendarEventDTO> calendarEventDTOS = new ArrayList<>();
 
-        calendarWeekEvents.setWeekRange(DateTimeUtils.getWeekRange(items));
-
         for (Event event : items) {
             long start = event.getStart().getDateTime().getValue();
             long end = event.getEnd().getDateTime().getValue();
             String summary = event.getSummary();
             CalendarEventDTO calendarEventDTO = DateTimeUtils.convertUnixToDTO(start, end, summary);
-
             calendarEventDTOS.add(calendarEventDTO);
         }
 
+        calendarWeekEvents.setWeekRange(DateTimeUtils.getWeekRange(items));
         calendarWeekEvents.setWeekEvents(calendarEventDTOS);
         return calendarWeekEvents;
     }
@@ -83,17 +81,15 @@ public class GoogleCalendarService {
                     .setDateTime(startDateTime)
                     .setTimeZone("America/Recife");
 
-            event.setStart(start);
-
             DateTime endDateTime = new DateTime(calendarEventDTO.getEnd()+"-03:00");
             EventDateTime end = new EventDateTime()
                     .setDateTime(endDateTime)
                     .setTimeZone("America/Recife");
 
+            event.setStart(start);
             event.setEnd(end);
 
             service.events().insert("primary", event).execute();
-
 
             return DateTimeUtils.convertUnixToDTO(
                     event.getStart().getDateTime().getValue(),

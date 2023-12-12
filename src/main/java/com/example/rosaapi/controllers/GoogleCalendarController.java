@@ -2,7 +2,7 @@ package com.example.rosaapi.controllers;
 
 
 import com.example.rosaapi.controllers.responses.CalendarEventResponse;
-import com.example.rosaapi.controllers.responses.GoogleCalendarResponse;
+import com.example.rosaapi.controllers.responses.CalendarWeekEventsResponse;
 import com.example.rosaapi.model.dtos.CalendarEventDTO;
 import com.example.rosaapi.service.GoogleAuthService;
 import com.example.rosaapi.service.GoogleCalendarService;
@@ -18,8 +18,8 @@ public class GoogleCalendarController {
     private final GoogleCalendarService googleCalendarService =
             new GoogleCalendarService(GoogleAuthService.getCalendarService());
     @GetMapping("/eventos-da-semana")
-    public ResponseEntity<GoogleCalendarResponse> getWeekEvents(){
-        return ResponseEntity.ok(new GoogleCalendarResponse(googleCalendarService.getWeekEvents()));
+    public ResponseEntity<CalendarWeekEventsResponse> getWeekEvents(){
+        return ResponseEntity.ok(new CalendarWeekEventsResponse(googleCalendarService.getWeekEvents()));
     }
 
     @PostMapping("/criar-evento")

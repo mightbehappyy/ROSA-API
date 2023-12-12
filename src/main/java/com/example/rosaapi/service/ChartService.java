@@ -56,6 +56,4 @@ public class ChartService {
 
         return quickChart.getUrl();
     }
-
-
 }

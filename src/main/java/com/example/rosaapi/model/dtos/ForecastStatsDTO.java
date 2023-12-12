@@ -10,5 +10,4 @@ public class ForecastStatsDTO {
     private Float feelslike_c;
     private int humidity;
     private String time;
-
 }

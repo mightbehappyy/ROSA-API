@@ -21,7 +21,4 @@ public class CalendarEventDTO {
         this.date = date;
         this.dayOfWeek = dayOfWeek;
     }
-
-
-
 }

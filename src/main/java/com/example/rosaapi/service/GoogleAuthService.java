@@ -25,14 +25,12 @@ import java.util.List;
 
 
 public class GoogleAuthService {
-
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
     private static final List<String> SCOPES =
             Collections.singletonList(CalendarScopes.CALENDAR);
     private static final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-
     private GoogleAuthService() {
 
     }
@@ -58,7 +56,6 @@ public class GoogleAuthService {
         } catch(IOException e) {
             throw  new CalendarCredentialsException("An error occurred:" + e);
         }
-
     }
 
     public static Calendar getCalendarService() {
@@ -71,6 +68,5 @@ public class GoogleAuthService {
         } catch(IOException | GeneralSecurityException e) {
             throw new CalendarServiceException("An error occurred:"+e);
         }
-
     }
 }

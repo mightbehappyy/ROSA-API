@@ -9,12 +9,12 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class GoogleCalendarResponse {
+public class CalendarWeekEventsResponse {
 
     private final String weekRange;
     private final List<CalendarEventDTO> weekEvents;
-
-    public GoogleCalendarResponse(CalendarWeekEventsDTO calendarWeekEvents) {
+    
+    public CalendarWeekEventsResponse(CalendarWeekEventsDTO calendarWeekEvents) {
         this.weekEvents = calendarWeekEvents.getWeekEvents();
         this.weekRange = calendarWeekEvents.getWeekRange();
     }
