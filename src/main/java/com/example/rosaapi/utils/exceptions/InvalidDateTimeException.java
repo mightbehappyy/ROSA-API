@@ -1,8 +1,8 @@
 package com.example.rosaapi.utils.exceptions;
 
-public class DateTimeInvalidException extends RuntimeException{
+public class InvalidDateTimeException extends RuntimeException{
 
-    public DateTimeInvalidException(String message) {
+    public InvalidDateTimeException(String message) {
         super("Error:" + message);
 
     }

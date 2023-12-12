@@ -1,8 +1,8 @@
 package com.example.rosaapi.utils.exceptions;
 
-public class EventInvalidException extends RuntimeException{
+public class InvalidEventException extends RuntimeException{
 
-    public EventInvalidException(String message) {
+    public InvalidEventException(String message) {
         super("Error:" + message);
 
     }
