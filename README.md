@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href=""><img src="https://i.imgur.com/hDrWf8Z.png" alt="ROSA" width="500"></a>
+  <a href=""><img src="https://i.imgur.com/didOx0E.png" alt="ROSA" width="600"></a>
   <br>
   <br>
 </h1>
