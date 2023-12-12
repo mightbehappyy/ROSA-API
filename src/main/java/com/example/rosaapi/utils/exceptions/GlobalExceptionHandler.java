@@ -12,14 +12,14 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CityInvalidException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidCityException(CityInvalidException ex) {
+    @ExceptionHandler(InvalidCityException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCityException(InvalidCityException ex) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(EventInvalidException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidEventException(EventInvalidException ex) {
+    @ExceptionHandler(InvalidEventException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidEventException(InvalidEventException ex) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
         return ResponseEntity.internalServerError().body(errorResponse);
     }
@@ -30,8 +30,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
-    @ExceptionHandler(DateTimeInvalidException.class)
-    public ResponseEntity<ErrorResponse> handleHandleIllegalDateTimeFormatException(DateTimeInvalidException ex) {
+    @ExceptionHandler(InvalidDateTimeException.class)
+    public ResponseEntity<ErrorResponse> handleHandleIllegalDateTimeFormatException(InvalidDateTimeException ex) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
@@ -46,5 +46,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleCalendarCredentialsException(CalendarCredentialsException ex) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+    @ExceptionHandler(ExistentEventException.class)
+    public ResponseEntity<ErrorResponse> handleExistentEventException(ExistentEventException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 }

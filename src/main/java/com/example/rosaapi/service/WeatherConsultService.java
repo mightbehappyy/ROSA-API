@@ -5,7 +5,7 @@ import com.example.rosaapi.model.dtos.ForecastDataDTO;
 import com.example.rosaapi.model.dtos.ForecastStatsDTO;
 import com.example.rosaapi.model.dtos.ForecastdayDTO;
 import com.example.rosaapi.model.dtos.WeatherDataDTO;
-import com.example.rosaapi.utils.exceptions.CityInvalidException;
+import com.example.rosaapi.utils.exceptions.InvalidCityException;
 import io.quickchart.QuickChart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class WeatherConsultService {
             return restTemplate.getForEntity(url, WeatherDataDTO.class).getBody();
         }
         catch(HttpClientErrorException.BadRequest e ) {
-            throw new CityInvalidException("Unable to understand city's name");
+            throw new InvalidCityException("Unable to understand city's name");
         }
     }
 
@@ -54,7 +54,7 @@ public class WeatherConsultService {
 
             return forecastData;
         }  catch (HttpClientErrorException.BadRequest e) {
-            throw new CityInvalidException("Unable to understand city's name");
+            throw new InvalidCityException("Unable to understand city's name");
         }
     }
 }
