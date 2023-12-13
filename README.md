@@ -13,8 +13,7 @@
   <a href="https://makeapullrequest.com">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
   </a>
-  <a href="https://wakatime.com/badge/user/018bb0d6-56a3-43d5-85d1-e7b7401fdda3/project/018c4b3a-ef06-4f52-98db-78a1321b0073">
-    <img src="https://wakatime.com/badge/user/018bb0d6-56a3-43d5-85d1-e7b7401fdda3/project/018c4b3a-ef06-4f52-98db-78a1321b0073.svg" alt="wakatime">
+  <a href="https://wakatime.com/badge/user/018bb0d6-56a3-43d5-85d1-e7b7401fdda3/project/018c4b3a-ef06-4f52-98db-78a1321b0073"><img src="https://wakatime.com/badge/user/018bb0d6-56a3-43d5-85d1-e7b7401fdda3/project/018c4b3a-ef06-4f52-98db-78a1321b0073.svg" alt="wakatime"></a>
   </a>
 </div>
 
