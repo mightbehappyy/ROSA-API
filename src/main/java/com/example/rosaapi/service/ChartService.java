@@ -12,7 +12,8 @@ import java.util.List;
 public class ChartService {
 
     private final QuickChart quickChart;
-
+    private final int width = 500;
+    private final int height = 300;
     public String getWeatherGraphic(List<ForecastStatsDTO> data){
 
         ArrayList<Float> temperature = new ArrayList<>();
@@ -27,8 +28,8 @@ public class ChartService {
             timeStamp.add(String.valueOf(i));
         }
 
-        quickChart.setWidth(500);
-        quickChart.setHeight(300);
+        quickChart.setWidth(width);
+        quickChart.setHeight(height);
         quickChart.setConfig("{" +
                 "    type: 'line'," +
                 "    data: {" +

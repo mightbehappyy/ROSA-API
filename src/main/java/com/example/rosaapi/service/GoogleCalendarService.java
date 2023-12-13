@@ -12,12 +12,12 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 
 import java.io.IOException;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.rosaapi.utils.DateTimeUtils.getStartOfWeek;
@@ -39,37 +39,7 @@ public class GoogleCalendarService {
 
         Events events = fetchEvents(startTime, endTime);
 
-        return setCalendarWeekEventsDTO(events);
-    }
-
-    private Events fetchEvents(DateTime startTime, DateTime endTime){
-        try {
-            return service.events().list("primary")
-                    .setTimeMin(startTime)
-                    .setTimeMax(endTime)
-                    .setOrderBy("startTime")
-                    .setSingleEvents(true)
-                    .execute();
-        } catch(IOException e) {
-            throw new InvalidEventException("An error occurred when fetching events: " + e.getMessage());
-        }
-    }
-    private CalendarWeekEventsDTO setCalendarWeekEventsDTO(Events events) {
-        List<Event> items = events.getItems();
-        CalendarWeekEventsDTO calendarWeekEvents = new CalendarWeekEventsDTO();
-        List<CalendarEventDTO> calendarEventDTOS = new ArrayList<>();
-
-        for (Event event : items) {
-            long start = event.getStart().getDateTime().getValue();
-            long end = event.getEnd().getDateTime().getValue();
-            String summary = event.getSummary();
-            CalendarEventDTO calendarEventDTO = DateTimeUtils.convertUnixToDTO(start, end, summary);
-            calendarEventDTOS.add(calendarEventDTO);
-        }
-
-        calendarWeekEvents.setWeekRange(DateTimeUtils.getWeekRange(items));
-        calendarWeekEvents.setWeekEvents(calendarEventDTOS);
-        return calendarWeekEvents;
+        return CalendarDTOMapper.getWeekEventsInDTO(events);
     }
 
     public CalendarEventDTO postEvents(CalendarEventDTO calendarEventDTO) {
@@ -85,6 +55,7 @@ public class GoogleCalendarService {
             EventDateTime end = new EventDateTime()
                     .setDateTime(endDateTime)
                     .setTimeZone("America/Recife");
+
             if(checkOverlappingEvents(startDateTime, endDateTime)) {
                 throw new ExistentEventException("An existing event was found");
             } else {
@@ -121,5 +92,17 @@ public class GoogleCalendarService {
             }
         }
         return false;
+    }
+    private Events fetchEvents(DateTime startTime, DateTime endTime){
+        try {
+            return service.events().list("primary")
+                    .setTimeMin(startTime)
+                    .setTimeMax(endTime)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+        } catch(IOException e) {
+            throw new InvalidEventException("An error occurred when fetching events: " + e.getMessage());
+        }
     }
 }

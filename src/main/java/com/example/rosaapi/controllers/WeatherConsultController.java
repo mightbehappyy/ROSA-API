@@ -6,10 +6,11 @@ import com.example.rosaapi.controllers.responses.WeatherForecastConsultResponse;
 import com.example.rosaapi.service.WeatherConsultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/weather-consult")
+@RequestMapping("/weather-consult")
 @RequiredArgsConstructor
 public class WeatherConsultController {
 

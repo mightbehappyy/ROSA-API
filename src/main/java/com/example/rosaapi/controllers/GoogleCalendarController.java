@@ -8,6 +8,7 @@ import com.example.rosaapi.service.GoogleAuthService;
 import com.example.rosaapi.service.GoogleCalendarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class GoogleCalendarController {
 
+
     private final GoogleCalendarService googleCalendarService =
             new GoogleCalendarService(GoogleAuthService.getCalendarService());
+
     @GetMapping("/eventos-da-semana")
     public ResponseEntity<CalendarWeekEventsResponse> getWeekEvents(){
         return ResponseEntity.ok(new CalendarWeekEventsResponse(googleCalendarService.getWeekEvents()));
