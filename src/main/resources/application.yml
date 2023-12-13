@@ -1,0 +1,14 @@
+resilience4j.rate-limiter:
+  configs:
+    default:
+      limitForPeriod: 5
+      limitRefreshPeriod: 5s
+      timeoutDuration: 10s
+      registerHealthIndicator: true
+      eventConsumerBufferSize: 100
+  instances:
+    weatherAPILimiter:
+      baseConfig: default
+    calendarAPILimiter:
+      baseConfig: default
+      limitForPeriod: 10

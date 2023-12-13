@@ -67,6 +67,4 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEnconder() {
         return new BCryptPasswordEncoder(10, new SecureRandom());
     }
-
-
 }

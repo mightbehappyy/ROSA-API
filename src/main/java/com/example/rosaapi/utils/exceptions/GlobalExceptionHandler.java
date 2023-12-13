@@ -2,6 +2,7 @@ package com.example.rosaapi.utils.exceptions;
 
 
 import com.example.rosaapi.controllers.responses.ErrorResponse;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -51,5 +52,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleExistentEventException(ExistentEventException ex) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<ErrorResponse> handleExistentEventException(RequestNotPermitted ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(errorResponse);
     }
 }

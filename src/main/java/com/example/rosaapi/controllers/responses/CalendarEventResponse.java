@@ -20,4 +20,5 @@ public class CalendarEventResponse {
         this.date = calendarEventDTO.getDate();
         this.dayOfWeek = calendarEventDTO.getDayOfWeek();
     }
+
 }
