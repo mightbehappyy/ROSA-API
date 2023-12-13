@@ -28,7 +28,7 @@ public class GoogleCalendarController {
         return ResponseEntity.ok(new CalendarWeekEventsResponse(googleCalendarService.getWeekEvents()));
     }
 
-    @RateLimiter(name="calendarAPILimiter", fallbackMethod = "calendarAPIFallbackMethod")
+
     @PostMapping("/criar-evento")
     public ResponseEntity<?> postEvent(@RequestBody CalendarEventDTO calendarEventDTO)  {
             return ResponseEntity.ok(new CalendarEventResponse(googleCalendarService.postEvents(calendarEventDTO)));
