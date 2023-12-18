@@ -28,7 +28,7 @@ import java.security.SecureRandom;
 public class SecurityConfig {
 
     private final String jwtkey = System.getenv("JWT_KEY");
-    private final String username = System.getenv("USERNAME");
+    private final String username = System.getenv("USER_NAME");
     private final String password = System.getenv("PASSWORD");
     @Bean
     public UserDetailsService userDetailsService() {

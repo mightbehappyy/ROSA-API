@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("api/reserva-lab")
 @RequiredArgsConstructor
@@ -22,10 +24,9 @@ public class GoogleCalendarController {
     private final GoogleCalendarService googleCalendarService =
             new GoogleCalendarService(GoogleAuthService.getCalendarService());
 
-    @RateLimiter(name="calendarAPILimiter", fallbackMethod = "calendarAPIFallbackMethod")
-    @GetMapping("/eventos-da-semana")
-    public ResponseEntity<?> getWeekEvents(){
-        return ResponseEntity.ok(new CalendarWeekEventsResponse(googleCalendarService.getWeekEvents()));
+    @GetMapping("/eventos-da-semana/{lab}")
+    public ResponseEntity<?> getWeekEvents(@PathVariable("lab") int lab) throws IOException {
+        return ResponseEntity.ok(new CalendarWeekEventsResponse(googleCalendarService.getWeekEvents(lab)));
     }
 
 

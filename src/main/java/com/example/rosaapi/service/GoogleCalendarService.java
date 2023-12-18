@@ -6,6 +6,7 @@ import com.example.rosaapi.utils.DateTimeUtils;
 import com.example.rosaapi.utils.exceptions.ExistentEventException;
 import com.example.rosaapi.utils.exceptions.InvalidDateTimeException;
 import com.example.rosaapi.utils.exceptions.InvalidEventException;
+import com.example.rosaapi.utils.functions.LabIdFunction;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
@@ -27,8 +28,7 @@ public class GoogleCalendarService {
 
     private final Calendar service;
 
-    public CalendarWeekEventsDTO getWeekEvents() {
-
+    public CalendarWeekEventsDTO getWeekEvents(int lab) throws IOException {
         LocalDate startOfWeek = getStartOfWeek();
         LocalDate endOfWeek = startOfWeek.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
 
@@ -37,7 +37,7 @@ public class GoogleCalendarService {
         DateTime endTime = new DateTime(endOfWeek.atStartOfDay().toInstant(ZoneOffset.ofHours(-3))
                 .toEpochMilli());
 
-        Events events = fetchEvents(startTime, endTime);
+        Events events = fetchEvents(startTime, endTime, lab);
 
         return CalendarDTOMapper.getWeekEventsInDTO(events);
     }
@@ -46,12 +46,12 @@ public class GoogleCalendarService {
         try {
             Event event = new Event().setSummary(calendarEventDTO.getSummary());
 
-            DateTime startDateTime = new DateTime(calendarEventDTO.getStart()+"-03:00");
+            DateTime startDateTime = new DateTime(calendarEventDTO.getDate() + "T" + calendarEventDTO.getStart() + ":00" +"-03:00");
             EventDateTime start = new EventDateTime()
                     .setDateTime(startDateTime)
                     .setTimeZone("America/Recife");
 
-            DateTime endDateTime = new DateTime(calendarEventDTO.getEnd()+"-03:00");
+            DateTime endDateTime = new DateTime(calendarEventDTO.getDate() + "T" + calendarEventDTO.getEnd() + ":00" +"-03:00");
             EventDateTime end = new EventDateTime()
                     .setDateTime(endDateTime)
                     .setTimeZone("America/Recife");
@@ -78,8 +78,8 @@ public class GoogleCalendarService {
         }
     }
 
-    private boolean checkOverlappingEvents(DateTime startDateTime, DateTime endDateTime) {
-        List<Event> items = fetchEvents(startDateTime, endDateTime).getItems();
+    private boolean checkOverlappingEvents(DateTime startDateTime, DateTime endDateTime) throws IOException {
+        List<Event> items = fetchEvents(startDateTime, endDateTime, 1).getItems();
         long end = endDateTime.getValue();
 
         if (!items.isEmpty()) {
@@ -93,16 +93,13 @@ public class GoogleCalendarService {
         }
         return false;
     }
-    private Events fetchEvents(DateTime startTime, DateTime endTime){
-        try {
-            return service.events().list("primary")
+    private Events fetchEvents(DateTime startTime, DateTime endTime, int lab) throws IOException {
+            return service.events().list(LabIdFunction.getLabId(lab))
                     .setTimeMin(startTime)
                     .setTimeMax(endTime)
                     .setOrderBy("startTime")
                     .setSingleEvents(true)
                     .execute();
-        } catch(IOException e) {
-            throw new InvalidEventException("An error occurred when fetching events: " + e.getMessage());
-        }
+
     }
 }
