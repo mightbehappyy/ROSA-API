@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("api/reserva-lab")
@@ -29,6 +30,12 @@ public class GoogleCalendarController {
         return ResponseEntity.ok(new CalendarWeekEventsResponse(googleCalendarService.getWeekEvents(lab)));
     }
 
+    @GetMapping("/eventos-do-dia/{lab}")
+    public ResponseEntity<?> getDayEvents(@PathVariable("lab") int lab, @RequestBody CalendarEventDTO calendarEventDTO)
+            throws IOException, ParseException {
+        return ResponseEntity.ok(new CalendarWeekEventsResponse(googleCalendarService.fetchAllDayEvents(
+                calendarEventDTO.getDate(), lab)));
+    }
 
     @PostMapping("/criar-evento")
     public ResponseEntity<?> postEvent(@RequestBody CalendarEventDTO calendarEventDTO)  {

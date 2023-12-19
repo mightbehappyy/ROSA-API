@@ -6,6 +6,7 @@ import com.example.rosaapi.utils.DateTimeUtils;
 import com.example.rosaapi.utils.exceptions.ExistentEventException;
 import com.example.rosaapi.utils.exceptions.InvalidDateTimeException;
 import com.example.rosaapi.utils.exceptions.InvalidEventException;
+import com.example.rosaapi.utils.functions.FormatDateString;
 import com.example.rosaapi.utils.functions.LabIdFunction;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
@@ -13,10 +14,11 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
@@ -80,6 +82,22 @@ public class GoogleCalendarService {
         }
     }
 
+    public CalendarWeekEventsDTO fetchAllDayEvents(String startTime, int lab) throws IOException, ParseException {
+        String date = FormatDateString.getFormattedString(startTime);
+
+        DateTime start = new DateTime(date + "T" + "00:00:00" + "-03:00");
+        DateTime end = new DateTime(date + "T" + "23:59:59" + "-03:00");
+        Events events = service.events().list(LabIdFunction.getLabId(lab))
+                .setTimeMin(start)
+                .setTimeMax(end)
+                .setOrderBy("startTime")
+                .setSingleEvents(true)
+                .execute();
+        return CalendarDTOMapper.getWeekEventsInDTO(events);
+
+    }
+
+
     private boolean checkOverlappingEvents(DateTime startDateTime, DateTime endDateTime) throws IOException {
         List<Event> items = fetchEvents(startDateTime, endDateTime, 1).getItems();
         long end = endDateTime.getValue();
@@ -95,13 +113,14 @@ public class GoogleCalendarService {
         }
         return false;
     }
+
     private Events fetchEvents(DateTime startTime, DateTime endTime, int lab) throws IOException {
-            return service.events().list(LabIdFunction.getLabId(lab))
-                    .setTimeMin(startTime)
-                    .setTimeMax(endTime)
-                    .setOrderBy("startTime")
-                    .setSingleEvents(true)
-                    .execute();
+        return service.events().list(LabIdFunction.getLabId(lab))
+                .setTimeMin(startTime)
+                .setTimeMax(endTime)
+                .setOrderBy("startTime")
+                .setSingleEvents(true)
+                .execute();
 
     }
 }
