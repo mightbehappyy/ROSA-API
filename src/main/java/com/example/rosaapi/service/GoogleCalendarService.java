@@ -46,12 +46,14 @@ public class GoogleCalendarService {
         try {
             Event event = new Event().setSummary(calendarEventDTO.getSummary());
 
-            DateTime startDateTime = new DateTime(calendarEventDTO.getDate() + "T" + calendarEventDTO.getStart() + ":00" +"-03:00");
+            DateTime startDateTime = new DateTime(
+                    calendarEventDTO.getDate() + "T" + calendarEventDTO.getStart() + ":00" +"-03:00");
             EventDateTime start = new EventDateTime()
                     .setDateTime(startDateTime)
                     .setTimeZone("America/Recife");
 
-            DateTime endDateTime = new DateTime(calendarEventDTO.getDate() + "T" + calendarEventDTO.getEnd() + ":00" +"-03:00");
+            DateTime endDateTime = new DateTime(
+                    calendarEventDTO.getDate() + "T" + calendarEventDTO.getEnd() + ":00" +"-03:00");
             EventDateTime end = new EventDateTime()
                     .setDateTime(endDateTime)
                     .setTimeZone("America/Recife");

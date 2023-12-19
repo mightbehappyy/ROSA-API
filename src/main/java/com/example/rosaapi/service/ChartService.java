@@ -15,7 +15,6 @@ public class ChartService {
     private final int width = 500;
     private final int height = 300;
     public String getWeatherGraphic(List<ForecastStatsDTO> data){
-
         ArrayList<Float> temperature = new ArrayList<>();
         ArrayList<Integer> humidity = new ArrayList<>();
         ArrayList<String> timeStamp = new ArrayList<>();
@@ -25,15 +24,18 @@ public class ChartService {
             humidity.add(data.get(i).getHumidity());
             temperature.add(data.get(i).getTemp_c());
             feelsLike.add(data.get(i).getFeelslike_c());
-            timeStamp.add(String.valueOf(i));
+            timeStamp.add('"'+String.valueOf(i)+ ":00"+'"');
         }
 
         quickChart.setWidth(width);
         quickChart.setHeight(height);
+        quickChart.setBackgroundColor("rgb(255,255,255)");
+
+
         quickChart.setConfig("{" +
                 "    type: 'line'," +
                 "    data: {" +
-                "        labels: " + timeStamp + "," +
+                "        labels: " + timeStamp + " ,"+
                 "        datasets: [" +
                 "            {" +
                 "                label: 'Temperatura'," +
