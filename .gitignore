@@ -3,7 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+/src/main/resources/google-credentials.json
 ### STS ###
 .apt_generated
 .classpath
@@ -34,7 +34,6 @@ build/
 
 .mvn
 
-/src/main/resources/credentials.json
 tokens/
 
 

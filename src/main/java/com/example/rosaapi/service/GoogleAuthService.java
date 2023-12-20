@@ -18,7 +18,7 @@ import java.util.Collections;
 
 @Service
 public class GoogleAuthService {
-    private static final String CREDENTIALS_FILE_PATH = "src/main/resources/credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "src/main/resources/google-credentials.json";
     private static final String APPLICATION_NAME = "ROSA-API";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private GoogleAuthService() {
