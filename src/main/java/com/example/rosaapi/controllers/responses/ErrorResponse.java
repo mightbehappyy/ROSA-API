@@ -1,4 +1,7 @@
 package com.example.rosaapi.controllers.responses;
 
-public record ErrorResponse(int statusCode, String message) {
+public class ErrorResponse {
+    public ErrorResponse(int statusCode, String message){
+
+    }
 }
