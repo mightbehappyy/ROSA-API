@@ -29,6 +29,7 @@ import static com.example.rosaapi.utils.DateTimeUtils.getStartOfWeek;
 public class GoogleCalendarService {
 
     private final Calendar service;
+    private static final String ID_CALENDAR_TEST = System.getenv("TEST_CALENDAR_ID");
 
     public CalendarWeekEventsDTO getWeekEvents(int lab) throws IOException {
         LocalDate startOfWeek = getStartOfWeek();
@@ -66,7 +67,7 @@ public class GoogleCalendarService {
                 event.setStart(start);
                 event.setEnd(end);
 
-                service.events().insert("primary", event).execute();
+                service.events().insert(ID_CALENDAR_TEST, event).execute();
 
                 return DateTimeUtils.convertUnixToDTO(
                         event.getStart().getDateTime().getValue(),
