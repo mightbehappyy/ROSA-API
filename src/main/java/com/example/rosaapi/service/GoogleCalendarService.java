@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
@@ -35,9 +34,16 @@ public class GoogleCalendarService {
         LocalDate startOfWeek = getStartOfWeek();
         LocalDate endOfWeek = startOfWeek.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
 
-        DateTime startTime = new DateTime(startOfWeek.atStartOfDay().toInstant(ZoneOffset.ofHours(-3))
-                .toEpochMilli());
-        DateTime endTime = new DateTime(endOfWeek.atStartOfDay().toInstant(ZoneOffset.ofHours(-3))
+        DateTime startTime = new DateTime(startOfWeek
+                .atStartOfDay()
+                .atZone(ZoneId.of("America/Sao_Paulo"))
+                .toInstant().
+                toEpochMilli());
+
+        DateTime endTime = new DateTime(endOfWeek
+                .atStartOfDay()
+                .atZone(ZoneId.of("America/Sao_Paulo"))
+                .toInstant()
                 .toEpochMilli());
 
         Events events = fetchEvents(startTime, endTime, lab);
