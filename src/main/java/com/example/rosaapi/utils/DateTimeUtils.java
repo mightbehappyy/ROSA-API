@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.TimeZone;
 
 public final class DateTimeUtils {
 
@@ -16,18 +17,19 @@ public final class DateTimeUtils {
 
     public static CalendarEventDTO convertUnixToDTO(long start, long end, String summary) {
 
-            ZoneId desiredZone = ZoneId.of("America/Sao_Paulo");
-            ZonedDateTime startTime = Instant.ofEpochMilli(start).atZone(desiredZone);
-            ZonedDateTime endTime = Instant.ofEpochMilli(end).atZone(desiredZone);
-
             SimpleDateFormat timeConverter = new SimpleDateFormat("HH:mm");
             SimpleDateFormat dateConverter = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat dayOfWeekConverter = new SimpleDateFormat("EEE");
 
-            String formattedDay = dayOfWeekConverter.format(startTime);
-            String formattedDate = dateConverter.format(startTime);
-            String formattedStart = timeConverter.format(startTime);
-            String formattedEnd = timeConverter.format(endTime);
+            dateConverter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
+            timeConverter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
+
+            SimpleDateFormat dayOfWeekConverter = new SimpleDateFormat("EEE");
+            dayOfWeekConverter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
+
+            String formattedDay = dayOfWeekConverter.format(start);
+            String formattedDate = dateConverter.format(start);
+            String formattedStart = timeConverter.format(start);
+            String formattedEnd = timeConverter.format(end);
 
             return new CalendarEventDTO(
                     summary,
