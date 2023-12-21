@@ -32,7 +32,7 @@ public class GoogleCalendarService {
 
     public CalendarWeekEventsDTO getWeekEvents(int lab) throws IOException {
         LocalDate startOfWeek = getStartOfWeek();
-        LocalDate endOfWeek = startOfWeek.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
+        LocalDate endOfWeek = startOfWeek.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
 
         DateTime startTime = new DateTime(startOfWeek
                 .atStartOfDay()
